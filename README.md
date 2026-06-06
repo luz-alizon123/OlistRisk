@@ -8,17 +8,35 @@ La solución fue desarrollada siguiendo una arquitectura de datos completa, desd
 
 ## Arquitectura General
 
-```mermaid
-graph TD
-    A[Dataset CSV Olist] --> B[PostgreSQL]
-    B --> C[01_conexion_postgres.py]
-    C --> D[05_Master_Table.md<br>(master_table_dirty.parquet)]
-    D --> E[02_feature_engineering.py]
-    E --> F[03_preparar_datos.py]
-    F --> G[04_seleccion_variables.py]
-    G --> H[05_modelado.py]
-    H --> I[Champion Model]
-    I --> J[Dashboard Streamlit]
+```Dataset CSV Olist
+        │
+        ▼
+ PostgreSQL
+        │
+        ▼
+01_conexion_postgres.py
+        │
+        ▼
+05_Master_Table.md
+(master_table_dirty.parquet)
+        │
+        ▼
+02_feature_engineering.py
+        │
+        ▼
+03_preparar_datos.py
+        │
+        ▼
+04_seleccion_variables.py
+        │
+        ▼
+05_modelado.py
+        │
+        ▼
+Champion Model
+        │
+        ▼
+Dashboard Streamlit
 ```
 
 ## Tecnologías Utilizadas
