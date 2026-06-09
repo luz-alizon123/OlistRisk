@@ -2,7 +2,7 @@
 04_seleccion_variables.py — SPRINT 2 (v2 CORREGIDO)
 =====================================================
 Correcciones:
-  • PSI umbral reducido a 0.15 (exigencia docente, antes estaba 0.50)
+  • PSI umbral reducido a 0.15
   • PSI calculado sobre datos crudos con bins adaptativos
   • Se incluyen los 4 pasos completos del instructor:
       0. Estado inicial
@@ -168,7 +168,7 @@ tabla.append({"Paso": "1 - Missing >10%",
  
  
 # ── PASO 2: PSI > 0.15 ────────────────────────────────────────────────────────
-# ⚠️ CORRECCIÓN CRÍTICA: umbral reducido de 0.50 a 0.15 (exigencia docente)
+# ⚠️ CORRECCIÓN CRÍTICA: umbral reducido de 0.50 a 0.15 
 # Las variables purchase_month y purchase_quarter tenían PSI 9.9 y 3.1
 # porque reflejan la distribución mensual exacta, que cambia radicalmente
 # entre train (sep 2016–ene 2018) y val (feb–mar 2018).
