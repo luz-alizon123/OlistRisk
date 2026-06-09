@@ -8,7 +8,7 @@ Correcciones aplicadas:
       Train:    sep 2016 – ene 2018   (~70% datos)
       Val:      feb 2018 – mar 2018   (período con ~7–9% tardíos)
       Backtest: abr 2018 – may 2018
-      Live:     jun 2018 – ago 2018   (excluir sep 2018 por instrucción docente)
+      Live:     jun 2018 – ago 2018  
   • Undersampling aplicado SOLO al train para balancear clases (ratio 1:3)
   • WOE recalculado sobre train post-undersampling
   • approval_hours_raw excluida (solo se usa para derivar approval_ratio)
