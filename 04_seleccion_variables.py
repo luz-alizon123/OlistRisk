@@ -121,7 +121,6 @@ def calcular_psi(s_train, s_val, bins=10):
       PSI < 0.10  → Distribución estable (sin cambios)
       PSI 0.10–0.25 → Ligero cambio — monitorear
       PSI > 0.25  → Cambio significativo — variable inestable
-      (El docente exige PSI ≤ 0.15 para cada feature)
     """
     try:
         breaks = pd.qcut(s_train, q=bins, retbins=True, duplicates="drop")[1]
