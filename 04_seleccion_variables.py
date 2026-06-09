@@ -1,4 +1,3 @@
-cion variables · PY
 """
 04_seleccion_variables.py — SPRINT 2 (v2 CORREGIDO)
 =====================================================
