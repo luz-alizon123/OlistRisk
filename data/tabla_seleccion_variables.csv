@@ -1,0 +1,5 @@
+Paso,Features,AUC Train,AUC Val,Eliminadas
+0 - Inicial,67,0.7612,0.7076,[]
+1 - Missing >10%,67,0.7612,0.7076,[]
+2 - PSI >0.15,63,0.7322,0.7181,"['seller_late_rate_hist', 'time_to_approve_hours', 'approval_ratio', 'total_freight']"
+3 - Correlación >0.90,50,0.7418,0.7157,"['max_length_cm', 'total_payment', 'region_x_complexity', 'interstate_flag', 'distance_km', 'max_width_cm', 'max_height_cm', 'approval_delay_flag', 'total_price', 'unique_sellers', 'distance_x_complexity', 'purchase_hour', 'region_risk_score']"

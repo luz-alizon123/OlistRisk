@@ -1,0 +1,68 @@
+Variable,PSI,Decisión,Razón
+seller_late_rate_hist,0.4942,ELIMINAR,PSI 0.4942 > umbral 0.15 — distribución inestable entre train y val
+time_to_approve_hours,0.3358,ELIMINAR,PSI 0.3358 > umbral 0.15 — distribución inestable entre train y val
+approval_ratio,0.3358,ELIMINAR,PSI 0.3358 > umbral 0.15 — distribución inestable entre train y val
+total_freight,0.2656,ELIMINAR,PSI 0.2656 > umbral 0.15 — distribución inestable entre train y val
+max_width_cm,0.0216,ELIMINAR,Correlación >0.90 con otra variable — redundante
+max_height_cm,0.0205,ELIMINAR,Correlación >0.90 con otra variable — redundante
+max_length_cm,0.0072,ELIMINAR,Correlación >0.90 con otra variable — redundante
+total_price,0.0059,ELIMINAR,Correlación >0.90 con otra variable — redundante
+total_payment,0.0044,ELIMINAR,Correlación >0.90 con otra variable — redundante
+purchase_hour,0.0018,ELIMINAR,Correlación >0.90 con otra variable — redundante
+region_risk_score,0.0014,ELIMINAR,Correlación >0.90 con otra variable — redundante
+distance_km,0.0014,ELIMINAR,Correlación >0.90 con otra variable — redundante
+region_x_complexity,0.0014,ELIMINAR,Correlación >0.90 con otra variable — redundante
+distance_x_complexity,0.0014,ELIMINAR,Correlación >0.90 con otra variable — redundante
+unique_sellers,0.0,ELIMINAR,Correlación >0.90 con otra variable — redundante
+approval_delay_flag,0.0,ELIMINAR,Correlación >0.90 con otra variable — redundante
+interstate_flag,0.0,ELIMINAR,Correlación >0.90 con otra variable — redundante
+estimated_delivery_days,0.0934,MANTENER,Pasa todos los filtros
+seller_total_orders_hist,0.0919,MANTENER,Pasa todos los filtros
+semana_del_mes,0.0292,MANTENER,Pasa todos los filtros
+risk_score,0.0224,MANTENER,Pasa todos los filtros
+avg_width_cm,0.0213,MANTENER,Pasa todos los filtros
+avg_height_cm,0.0198,MANTENER,Pasa todos los filtros
+approval_bin,0.0198,MANTENER,Pasa todos los filtros
+freight_ratio,0.0162,MANTENER,Pasa todos los filtros
+freight_per_kg,0.0151,MANTENER,Pasa todos los filtros
+max_dimension_cm,0.0138,MANTENER,Pasa todos los filtros
+volume_cm3,0.0134,MANTENER,Pasa todos los filtros
+log_volume_cm3,0.0134,MANTENER,Pasa todos los filtros
+avg_weight_g,0.0121,MANTENER,Pasa todos los filtros
+max_installments,0.0119,MANTENER,Pasa todos los filtros
+purchase_weekday,0.0117,MANTENER,Pasa todos los filtros
+avg_length_cm,0.0113,MANTENER,Pasa todos los filtros
+total_weight_g,0.0101,MANTENER,Pasa todos los filtros
+log_total_weight,0.0101,MANTENER,Pasa todos los filtros
+price_per_item,0.0094,MANTENER,Pasa todos los filtros
+weekday_x_hour,0.0071,MANTENER,Pasa todos los filtros
+density_gcm3,0.007,MANTENER,Pasa todos los filtros
+log_total_payment,0.0044,MANTENER,Pasa todos los filtros
+total_items,0.0003,MANTENER,Pasa todos los filtros
+bin_hora,0.0003,MANTENER,Pasa todos los filtros
+freight_category,0.0001,MANTENER,Pasa todos los filtros
+customer_state,0.0,MANTENER,Pasa todos los filtros
+unique_products,0.0,MANTENER,Pasa todos los filtros
+main_category,0.0,MANTENER,Pasa todos los filtros
+seller_state,0.0,MANTENER,Pasa todos los filtros
+payment_methods,0.0,MANTENER,Pasa todos los filtros
+main_payment_type,0.0,MANTENER,Pasa todos los filtros
+payment_rows,0.0,MANTENER,Pasa todos los filtros
+is_weekend,0.0,MANTENER,Pasa todos los filtros
+is_off_hours,0.0,MANTENER,Pasa todos los filtros
+high_risk_day,0.0,MANTENER,Pasa todos los filtros
+is_peak_season,0.0,MANTENER,Pasa todos los filtros
+is_festivo,0.0,MANTENER,Pasa todos los filtros
+is_short_promise,0.0,MANTENER,Pasa todos los filtros
+same_state,0.0,MANTENER,Pasa todos los filtros
+complex_route,0.0,MANTENER,Pasa todos los filtros
+is_long_distance,0.0,MANTENER,Pasa todos los filtros
+has_oversized_item,0.0,MANTENER,Pasa todos los filtros
+is_heavy,0.0,MANTENER,Pasa todos los filtros
+logistic_complexity,0.0,MANTENER,Pasa todos los filtros
+carrito_complejo,0.0,MANTENER,Pasa todos los filtros
+tiene_varios_vendedores,0.0,MANTENER,Pasa todos los filtros
+is_boleto,0.0,MANTENER,Pasa todos los filtros
+is_high_installments,0.0,MANTENER,Pasa todos los filtros
+high_freight_flag,0.0,MANTENER,Pasa todos los filtros
+seller_is_experienced,0.0,MANTENER,Pasa todos los filtros

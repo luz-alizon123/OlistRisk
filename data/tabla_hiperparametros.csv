@@ -1,0 +1,12 @@
+Modelo,Hiperparámetro,Base,Tuneado,Cambio
+LogReg,C,1.0,0.17313593585483208,✅ MEJORÓ
+LogReg,solver,lbfgs,liblinear,↔ cambió
+LogReg,penalty,l2,l1,↔ cambió
+LightGBM,n_estimators,200,389,↔ cambió
+LightGBM,num_leaves,31,37,↔ cambió
+LightGBM,learning_rate,0.1,0.022463,↔ cambió
+LightGBM,min_child_samples,20,50,✅ más regularización
+LightGBM,reg_alpha,0.0,0.684069,✅ más regularización
+LightGBM,reg_lambda,0.0,0.159121,✅ más regularización
+LightGBM,feature_fraction,1.0,0.618685,↔ cambió
+LightGBM,bagging_fraction,1.0,0.920918,↔ cambió
