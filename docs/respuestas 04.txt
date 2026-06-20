@@ -1,0 +1,264 @@
+PS C:\Users\SANDY\Desktop\olist> & C:/Users/SANDY/AppData/Local/Python/pythoncore-3.14-64/python.exe c:/Users/SANDY/Desktop/olist/04_seleccion_variables.py
+=================================================================
+  SELECCIÓN DE VARIABLES — SPRINT 4
+  Pasos: Missing → PSI (0.15) → Correlación (0.90)
+  Sin pasos IV ni RF importancia
+=================================================================
+
+  Datos crudos para PSI:
+  Train crudo: 64,152 filas  |  Val crudo: 13,415 filas
+  Train procesado: (64152, 79)  |  Val procesado: (13415, 79)
+
+  Features candidatas iniciales: 67
+
+▶ Estado inicial
+   67 features | AUC Train 0.7612 | AUC Val 0.7076
+
+▶ Paso 1: Missing rate > 10% en train crudo
+   Eliminadas (0): []
+   67 features | AUC Train 0.7612 | AUC Val 0.7076
+
+▶ Paso 2: PSI sobre datos crudos (umbral 0.15)
+   Interpretación: <0.10 estable | 0.10–0.20 moderado | >0.20 inestable
+
+   Variable                                   PSI  Estado
+   --------------------------------------------------------------
+   seller_late_rate_hist                   0.4942  ❌ INESTABLE ← ELIMINAR
+   time_to_approve_hours                   0.3358  ❌ INESTABLE ← ELIMINAR
+   approval_ratio                          0.3358  ❌ INESTABLE ← ELIMINAR
+   total_freight                           0.2656  ❌ INESTABLE ← ELIMINAR
+   estimated_delivery_days                 0.0934  ✅ ESTABLE
+   seller_total_orders_hist                0.0919  ✅ ESTABLE
+   semana_del_mes                          0.0292  ✅ ESTABLE
+   risk_score                              0.0224  ✅ ESTABLE
+   max_width_cm                            0.0216  ✅ ESTABLE
+   avg_width_cm                            0.0213  ✅ ESTABLE
+   max_height_cm                           0.0205  ✅ ESTABLE
+   avg_height_cm                           0.0198  ✅ ESTABLE
+   approval_bin                            0.0198  ✅ ESTABLE
+   freight_ratio                           0.0162  ✅ ESTABLE
+   freight_per_kg                          0.0151  ✅ ESTABLE
+   max_dimension_cm                        0.0138  ✅ ESTABLE
+   volume_cm3                              0.0134  ✅ ESTABLE
+   log_volume_cm3                          0.0134  ✅ ESTABLE
+   avg_weight_g                            0.0121  ✅ ESTABLE
+   max_installments                        0.0119  ✅ ESTABLE
+   purchase_weekday                        0.0117  ✅ ESTABLE
+   avg_length_cm                           0.0113  ✅ ESTABLE
+   log_total_weight                        0.0101  ✅ ESTABLE
+   total_weight_g                          0.0101  ✅ ESTABLE
+   price_per_item                          0.0094  ✅ ESTABLE
+   max_length_cm                           0.0072  ✅ ESTABLE
+   weekday_x_hour                          0.0071  ✅ ESTABLE
+   density_gcm3                            0.0070  ✅ ESTABLE
+   total_price                             0.0059  ✅ ESTABLE
+   log_total_payment                       0.0044  ✅ ESTABLE
+   total_payment                           0.0044  ✅ ESTABLE
+   purchase_hour                           0.0018  ✅ ESTABLE
+   region_x_complexity                     0.0014  ✅ ESTABLE
+   distance_km                             0.0014  ✅ ESTABLE
+   region_risk_score                       0.0014  ✅ ESTABLE
+   distance_x_complexity                   0.0014  ✅ ESTABLE
+   total_items                             0.0003  ✅ ESTABLE
+   bin_hora                                0.0003  ✅ ESTABLE
+   freight_category                        0.0001  ✅ ESTABLE
+   unique_products                         0.0000  ✅ ESTABLE
+   customer_state                          0.0000  ✅ ESTABLE
+   is_peak_season                          0.0000  ✅ ESTABLE
+   is_festivo                              0.0000  ✅ ESTABLE
+   unique_sellers                          0.0000  ✅ ESTABLE
+   main_category                           0.0000  ✅ ESTABLE
+   seller_state                            0.0000  ✅ ESTABLE
+   payment_methods                         0.0000  ✅ ESTABLE
+   is_off_hours                            0.0000  ✅ ESTABLE
+   main_payment_type                       0.0000  ✅ ESTABLE
+   payment_rows                            0.0000  ✅ ESTABLE
+   is_weekend                              0.0000  ✅ ESTABLE
+   is_short_promise                        0.0000  ✅ ESTABLE
+   high_risk_day                           0.0000  ✅ ESTABLE
+   carrito_complejo                        0.0000  ✅ ESTABLE
+   has_oversized_item                      0.0000  ✅ ESTABLE
+   is_long_distance                        0.0000  ✅ ESTABLE
+   same_state                              0.0000  ✅ ESTABLE
+   interstate_flag                         0.0000  ✅ ESTABLE
+   complex_route                           0.0000  ✅ ESTABLE
+   approval_delay_flag                     0.0000  ✅ ESTABLE
+   logistic_complexity                     0.0000  ✅ ESTABLE
+   is_heavy                                0.0000  ✅ ESTABLE
+   tiene_varios_vendedores                 0.0000  ✅ ESTABLE
+   high_freight_flag                       0.0000  ✅ ESTABLE
+   is_high_installments                    0.0000  ✅ ESTABLE
+   is_boleto                               0.0000  ✅ ESTABLE
+   seller_is_experienced                   0.0000  ✅ ESTABLE
+
+   Eliminadas (4): ['seller_late_rate_hist', 'time_to_approve_hours', 'approval_ratio', 'total_freight']
+   63 features | AUC Train 0.7322 | AUC Val 0.7181
+
+▶ Paso 3: Correlación > 0.90 (multicolinealidad)
+   Cuando dos variables tienen r > 0.90 entre sí,
+   se elimina la que tiene MENOR correlación con el target.
+
+   Pares eliminados:
+     - total_price                         r=0.927 con price_per_item | corr_target: 0.0217 < 0.0275
+     - max_length_cm                       r=0.997 con avg_length_cm | corr_target: 0.0182 < 0.0198
+     - max_height_cm                       r=0.997 con avg_height_cm | corr_target: 0.0129 < 0.0143
+     - max_width_cm                        r=0.997 con avg_width_cm | corr_target: 0.0069 < 0.0084
+     - total_payment                       r=0.915 con price_per_item | corr_target: 0.0249 < 0.0275
+     - purchase_hour                       r=0.949 con bin_hora | corr_target: 0.0090 < 0.0092
+     - approval_delay_flag                 r=0.924 con approval_bin | corr_target: 0.0257 < 0.0346
+     - interstate_flag                     r=1.000 con same_state | corr_target: 0.0860 < 0.0860
+     - region_risk_score                   r=0.998 con distance_km | corr_target: 0.0573 < 0.0600
+     - distance_km                         r=0.965 con is_long_distance | corr_target: 0.0600 < 0.0686
+     - unique_sellers                      r=0.972 con tiene_varios_vendedores | corr_target: 0.0252 < 0.0255
+     - region_x_complexity                 r=0.946 con is_long_distance | corr_target: 0.0573 < 0.0686
+     - distance_x_complexity               r=0.965 con is_long_distance | corr_target: 0.0600 < 0.0686
+
+   50 features | AUC Train 0.7418 | AUC Val 0.7157
+
+=================================================================
+  TABLA DE PROGRESO — SELECCIÓN DE VARIABLES
+=================================================================
+                 Paso  Features  AUC Train  AUC Val
+          0 - Inicial        67     0.7612   0.7076
+     1 - Missing >10%        67     0.7612   0.7076
+        2 - PSI >0.15        63     0.7322   0.7181
+3 - Correlación >0.90        50     0.7418   0.7157
+
+=================================================================
+  TABLA COMPLETA DE DECISIONES
+=================================================================
+                Variable    PSI Decisión                                                               Razón
+   seller_late_rate_hist 0.4942 ELIMINAR PSI 0.4942 > umbral 0.15 — distribución inestable entre train y val
+   time_to_approve_hours 0.3358 ELIMINAR PSI 0.3358 > umbral 0.15 — distribución inestable entre train y val
+          approval_ratio 0.3358 ELIMINAR PSI 0.3358 > umbral 0.15 — distribución inestable entre train y val
+           total_freight 0.2656 ELIMINAR PSI 0.2656 > umbral 0.15 — distribución inestable entre train y val
+            max_width_cm 0.0216 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+           max_height_cm 0.0205 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+           max_length_cm 0.0072 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+             total_price 0.0059 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+           total_payment 0.0044 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+           purchase_hour 0.0018 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+       region_risk_score 0.0014 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+             distance_km 0.0014 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+     region_x_complexity 0.0014 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+   distance_x_complexity 0.0014 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+          unique_sellers 0.0000 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+     approval_delay_flag 0.0000 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+         interstate_flag 0.0000 ELIMINAR                    Correlación >0.90 con otra variable — redundante
+ estimated_delivery_days 0.0934 MANTENER                                              Pasa todos los filtros
+seller_total_orders_hist 0.0919 MANTENER                                              Pasa todos los filtros
+          semana_del_mes 0.0292 MANTENER                                              Pasa todos los filtros
+              risk_score 0.0224 MANTENER                                              Pasa todos los filtros
+            avg_width_cm 0.0213 MANTENER                                              Pasa todos los filtros
+           avg_height_cm 0.0198 MANTENER                                              Pasa todos los filtros
+            approval_bin 0.0198 MANTENER                                              Pasa todos los filtros
+           freight_ratio 0.0162 MANTENER                                              Pasa todos los filtros
+          freight_per_kg 0.0151 MANTENER                                              Pasa todos los filtros
+        max_dimension_cm 0.0138 MANTENER                                              Pasa todos los filtros
+              volume_cm3 0.0134 MANTENER                                              Pasa todos los filtros
+          log_volume_cm3 0.0134 MANTENER                                              Pasa todos los filtros
+            avg_weight_g 0.0121 MANTENER                                              Pasa todos los filtros
+        max_installments 0.0119 MANTENER                                              Pasa todos los filtros
+        purchase_weekday 0.0117 MANTENER                                              Pasa todos los filtros
+           avg_length_cm 0.0113 MANTENER                                              Pasa todos los filtros
+          total_weight_g 0.0101 MANTENER                                              Pasa todos los filtros
+        log_total_weight 0.0101 MANTENER                                              Pasa todos los filtros
+          price_per_item 0.0094 MANTENER                                              Pasa todos los filtros
+          weekday_x_hour 0.0071 MANTENER                                              Pasa todos los filtros
+            density_gcm3 0.0070 MANTENER                                              Pasa todos los filtros
+       log_total_payment 0.0044 MANTENER                                              Pasa todos los filtros
+             total_items 0.0003 MANTENER                                              Pasa todos los filtros
+                bin_hora 0.0003 MANTENER                                              Pasa todos los filtros
+        freight_category 0.0001 MANTENER                                              Pasa todos los filtros
+          customer_state 0.0000 MANTENER                                              Pasa todos los filtros
+         unique_products 0.0000 MANTENER                                              Pasa todos los filtros
+           main_category 0.0000 MANTENER                                              Pasa todos los filtros
+            seller_state 0.0000 MANTENER                                              Pasa todos los filtros
+         payment_methods 0.0000 MANTENER                                              Pasa todos los filtros
+       main_payment_type 0.0000 MANTENER                                              Pasa todos los filtros
+            payment_rows 0.0000 MANTENER                                              Pasa todos los filtros
+              is_weekend 0.0000 MANTENER                                              Pasa todos los filtros
+            is_off_hours 0.0000 MANTENER                                              Pasa todos los filtros
+           high_risk_day 0.0000 MANTENER                                              Pasa todos los filtros
+          is_peak_season 0.0000 MANTENER                                              Pasa todos los filtros
+              is_festivo 0.0000 MANTENER                                              Pasa todos los filtros
+        is_short_promise 0.0000 MANTENER                                              Pasa todos los filtros
+              same_state 0.0000 MANTENER                                              Pasa todos los filtros
+           complex_route 0.0000 MANTENER                                              Pasa todos los filtros
+        is_long_distance 0.0000 MANTENER                                              Pasa todos los filtros
+      has_oversized_item 0.0000 MANTENER                                              Pasa todos los filtros
+                is_heavy 0.0000 MANTENER                                              Pasa todos los filtros
+     logistic_complexity 0.0000 MANTENER                                              Pasa todos los filtros
+        carrito_complejo 0.0000 MANTENER                                              Pasa todos los filtros
+ tiene_varios_vendedores 0.0000 MANTENER                                              Pasa todos los filtros
+               is_boleto 0.0000 MANTENER                                              Pasa todos los filtros
+    is_high_installments 0.0000 MANTENER                                              Pasa todos los filtros
+       high_freight_flag 0.0000 MANTENER                                              Pasa todos los filtros
+   seller_is_experienced 0.0000 MANTENER                                              Pasa todos los filtros
+
+=================================================================
+  FEATURES FINALES
+=================================================================
+  Inicial:   67 features
+  Final:     50 features
+  Reducción: 17 eliminadas
+
+  customer_state                           PSI=0.0000
+  total_items                              PSI=0.0003
+  unique_products                          PSI=0.0000
+  price_per_item                           PSI=0.0094
+  total_weight_g                           PSI=0.0101
+  avg_weight_g                             PSI=0.0121
+  avg_length_cm                            PSI=0.0113
+  avg_height_cm                            PSI=0.0198
+  avg_width_cm                             PSI=0.0213
+  main_category                            PSI=0.0000
+  seller_state                             PSI=0.0000
+  payment_methods                          PSI=0.0000
+  main_payment_type                        PSI=0.0000
+  max_installments                         PSI=0.0119
+  payment_rows                             PSI=0.0000
+  purchase_weekday                         PSI=0.0117
+  semana_del_mes                           PSI=0.0292
+  bin_hora                                 PSI=0.0003
+  is_weekend                               PSI=0.0000
+  is_off_hours                             PSI=0.0000
+  high_risk_day                            PSI=0.0000
+  is_peak_season                           PSI=0.0000
+  is_festivo                               PSI=0.0000
+  estimated_delivery_days                  PSI=0.0934
+  is_short_promise                         PSI=0.0000
+  approval_bin                             PSI=0.0198
+  weekday_x_hour                           PSI=0.0071
+  same_state                               PSI=0.0000
+  complex_route                            PSI=0.0000
+  is_long_distance                         PSI=0.0000
+  volume_cm3                               PSI=0.0134
+  density_gcm3                             PSI=0.0070
+  max_dimension_cm                         PSI=0.0138
+  has_oversized_item                       PSI=0.0000
+  is_heavy                                 PSI=0.0000
+  logistic_complexity                      PSI=0.0000
+  carrito_complejo                         PSI=0.0000
+  tiene_varios_vendedores                  PSI=0.0000
+  log_total_weight                         PSI=0.0101
+  log_volume_cm3                           PSI=0.0134
+  freight_ratio                            PSI=0.0162
+  is_boleto                                PSI=0.0000
+  is_high_installments                     PSI=0.0000
+  log_total_payment                        PSI=0.0044
+  high_freight_flag                        PSI=0.0000
+  freight_category                         PSI=0.0001
+  freight_per_kg                           PSI=0.0151
+  seller_total_orders_hist                 PSI=0.0919
+  seller_is_experienced                    PSI=0.0000
+  risk_score                               PSI=0.0224
+
+  ✅ features_finales.pkl  (50 variables)
+  ✅ features_finales.json
+  ✅ reporte_psi.csv
+  ✅ tabla_seleccion_variables.csv
+  ✅ tabla_decisiones_variables.csv
+
+  → Ejecutar ahora: python 05_modelado.py
+PS C:\Users\SANDY\Desktop\olist> 

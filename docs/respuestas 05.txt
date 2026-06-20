@@ -1,0 +1,207 @@
+PS C:\Users\SANDY\Desktop\olist> & C:/Users/SANDY/AppData/Local/Python/pythoncore-3.14-64/python.exe c:/Users/SANDY/Desktop/olist/05_modelado.py
+=================================================================
+  MODELADO
+  4 modelos base | Sin tuneo | Sin ensemble
+=================================================================
+
+  Features del modelo: 50
+  ['customer_state', 'total_items', 'unique_products', 'price_per_item', 'total_weight_g', 'avg_weight_g', 'avg_length_cm', 'avg_height_cm', 'avg_width_cm', 'main_category', 'seller_state', 'payment_methods', 'main_payment_type', 'max_installments', 'payment_rows', 'purchase_weekday', 'semana_del_mes', 'bin_hora', 'is_weekend', 'is_off_hours', 'high_risk_day', 'is_peak_season', 'is_festivo', 'estimated_delivery_days', 'is_short_promise', 'approval_bin', 'weekday_x_hour', 'same_state', 'complex_route', 'is_long_distance', 'volume_cm3', 'density_gcm3', 'max_dimension_cm', 'has_oversized_item', 'is_heavy', 'logistic_complexity', 'carrito_complejo', 'tiene_varios_vendedores', 'log_total_weight', 'log_volume_cm3', 'freight_ratio', 'is_boleto', 'is_high_installments', 'log_total_payment', 'high_freight_flag', 'freight_category', 'freight_per_kg', 'seller_total_orders_hist', 'seller_is_experienced', 'risk_score']
+
+  Desbalance — scale_pos_weight: 9.94
+  Positivos (tardíos): 5,864 | Negativos: 58,288
+
+  Splits:
+    train     : 64,152 pedidos | 9.1% tardíos
+    val       : 13,415 pedidos | 6.8% tardíos
+    backtest  : 5,973 pedidos | 1.4% tardíos
+    live      : 5,843 pedidos | 4.1% tardíos
+
+═════════════════════════════════════════════════════════════════
+  MODELO 1 — REGRESIÓN LOGÍSTICA (Baseline)
+═════════════════════════════════════════════════════════════════
+
+  ───────────────────────────────────────────────────────
+  LogReg  [TRAIN]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7166   Gini    : 0.4333
+  PR-AUC  : 0.2234   KS      : 0.3214
+  F1      : 0.2626   Recall  : 0.645
+  Precision:0.1649   Accuracy: 0.6689
+  TP=3782  FP=19159  TN=39129  FN=2082
+  Tasa Detección: 64.5%
+
+  ───────────────────────────────────────────────────────
+  LogReg  [VAL]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7528   Gini    : 0.5057
+  PR-AUC  : 0.1883   KS      : 0.3848
+  F1      : 0.2208   Recall  : 0.738
+  Precision:0.1298   Accuracy: 0.6444
+  TP=676  FP=4531  TN=7968  FN=240
+  Tasa Detección: 73.8%
+
+═════════════════════════════════════════════════════════════════
+  MODELO 2 — RANDOM FOREST
+═════════════════════════════════════════════════════════════════
+
+  ───────────────────────────────────────────────────────
+  RandomForest  [TRAIN]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 1.0   Gini    : 1.0
+  PR-AUC  : 1.0   KS      : 1.0
+  F1      : 0.9978   Recall  : 1.0
+  Precision:0.9956   Accuracy: 0.9996
+  TP=5864  FP=26  TN=58262  FN=0
+  Tasa Detección: 100.0%
+
+  ───────────────────────────────────────────────────────
+  RandomForest  [VAL]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7145   Gini    : 0.4289
+  PR-AUC  : 0.152   KS      : 0.3265
+  F1      : 0.094   Recall  : 0.06
+  Precision:0.2165   Accuracy: 0.921
+  TP=55  FP=199  TN=12300  FN=861
+  Tasa Detección: 6.0%
+
+═════════════════════════════════════════════════════════════════
+  MODELO 3 — LIGHTGBM
+═════════════════════════════════════════════════════════════════
+
+  ───────────────────────────────────────────────────────
+  LightGBM  [TRAIN]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.9029   Gini    : 0.8059
+  PR-AUC  : 0.5127   KS      : 0.6491
+  F1      : 0.4434   Recall  : 0.8423
+  Precision:0.3009   Accuracy: 0.8067
+  TP=4939  FP=11474  TN=46814  FN=925
+  Tasa Detección: 84.2%
+
+  ───────────────────────────────────────────────────────
+  LightGBM  [VAL]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7311   Gini    : 0.4622
+  PR-AUC  : 0.1741   KS      : 0.3509
+  F1      : 0.2339   Recall  : 0.6146
+  Precision:0.1444   Accuracy: 0.725
+  TP=563  FP=3336  TN=9163  FN=353
+  Tasa Detección: 61.5%
+
+═════════════════════════════════════════════════════════════════
+  MODELO 4 — XGBOOST
+═════════════════════════════════════════════════════════════════
+
+  ───────────────────────────────────────────────────────
+  XGBoost  [TRAIN]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.9806   Gini    : 0.9612
+  PR-AUC  : 0.8358   KS      : 0.8705
+  F1      : 0.6621   Recall  : 0.9628
+  Precision:0.5046   Accuracy: 0.9102
+  TP=5646  FP=5544  TN=52744  FN=218
+  Tasa Detección: 96.3%
+
+  ───────────────────────────────────────────────────────
+  XGBoost  [VAL]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.6875   Gini    : 0.375
+  PR-AUC  : 0.1538   KS      : 0.2998
+  F1      : 0.2375   Recall  : 0.4596
+  Precision:0.1601   Accuracy: 0.7984
+  TP=421  FP=2209  TN=10290  FN=495
+  Tasa Detección: 46.0%
+
+=================================================================
+  TABLA COMPARATIVA — VALIDACIÓN
+=================================================================
+      modelo  AUC-ROC   Gini  PR-AUC     KS     F1  Recall  Precision  Accuracy
+      LogReg   0.7528 0.5057  0.1883 0.3848 0.2208  0.7380     0.1298    0.6444
+RandomForest   0.7145 0.4289  0.1520 0.3265 0.0940  0.0600     0.2165    0.9210
+    LightGBM   0.7311 0.4622  0.1741 0.3509 0.2339  0.6146     0.1444    0.7250
+     XGBoost   0.6875 0.3750  0.1538 0.2998 0.2375  0.4596     0.1601    0.7984
+
+  BRECHA SOBREAJUSTE (Train → Val):
+  Modelo                  Train      Val      Gap  Estado
+  -------------------------------------------------------
+  LogReg                 0.7166   0.7528  -0.0362  ✅ OK
+  RandomForest           1.0000   0.7145   0.2855  ❌ Sobreajuste
+  LightGBM               0.9029   0.7311   0.1718  ⚠️  Moderado
+  XGBoost                0.9806   0.6875   0.2931  ❌ Sobreajuste
+
+  ✅ CHAMPION MODEL: LogReg  (AUC-ROC Val: 0.7528)
+
+▶ Optimizando umbral (F1 sobre Val)...
+  Umbral óptimo: 0.66
+
+  ───────────────────────────────────────────────────────
+  LogReg  [VAL (umbral=0.66)]  umbral=0.66
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7528   Gini    : 0.5057
+  PR-AUC  : 0.1883   KS      : 0.3848
+  F1      : 0.2692   Recall  : 0.4236
+  Precision:0.1973   Accuracy: 0.8429
+  TP=388  FP=1579  TN=10920  FN=528
+  Tasa Detección: 42.4%
+
+=================================================================
+  BACKTESTING TEMPORAL
+=================================================================
+
+  ───────────────────────────────────────────────────────
+  LogReg  [VAL]  umbral=0.66
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7528   Gini    : 0.5057
+  PR-AUC  : 0.1883   KS      : 0.3848
+  F1      : 0.2692   Recall  : 0.4236
+  Precision:0.1973   Accuracy: 0.8429
+  TP=388  FP=1579  TN=10920  FN=528
+  Tasa Detección: 42.4%
+
+  ───────────────────────────────────────────────────────
+  LogReg  [BACKTEST]  umbral=0.66
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7372   Gini    : 0.4744
+  PR-AUC  : 0.0415   KS      : 0.3784
+  F1      : 0.0876   Recall  : 0.3494
+  Precision:0.0501   Accuracy: 0.8989
+  TP=29  FP=550  TN=5340  FN=54
+  Tasa Detección: 34.9%
+
+  ───────────────────────────────────────────────────────
+  LogReg  [LIVE]  umbral=0.66
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.6618   Gini    : 0.3235
+  PR-AUC  : 0.1314   KS      : 0.2497
+  F1      : 0.1285   Recall  : 0.5042
+  Precision:0.0736   Accuracy: 0.7192
+  TP=121  FP=1522  TN=4081  FN=119
+  Tasa Detección: 50.4%
+
+  RESUMEN:
+   split  AUC-ROC   Gini  Recall     F1  Tasa_Deteccion
+     VAL   0.7528 0.5057  0.4236 0.2692          0.4236
+BACKTEST   0.7372 0.4744  0.3494 0.0876          0.3494
+    LIVE   0.6618 0.3235  0.5042 0.1285          0.5042
+
+▶ Generando curva ROC...
+  ✅ reports/curva_roc_comparativa.png
+▶ Generando curvas de ganancia y elevación...
+  ✅ reports/curvas_ganancia_elevacion.png
+▶ Generando curvas de aprendizaje...
+  ✅ reports/curvas_aprendizaje.png
+▶ Calculando SHAP values...
+
+▶ Guardando Champion Model...
+  ✅ models/champion_model_v2.pkl
+  ✅ models/champion_resumen.json
+
+=================================================================
+  ENTRENAMIENTO BASE COMPLETADO ✅
+  Champion:         LogReg
+  AUC-ROC Val:      0.7528
+  AUC-ROC Backtest: 0.7372
+  AUC-ROC Live:     0.6618
+  → Siguiente sprint: tuneo con Optuna
+=================================================================
+PS C:\Users\SANDY\Desktop\olist> 

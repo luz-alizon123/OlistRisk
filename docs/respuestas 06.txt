@@ -1,0 +1,233 @@
+=================================================================
+  TUNEO — SPRINT 3
+  LogReg + LightGBM | 4 técnicas de balanceo | Optuna 200 trials
+=================================================================
+
+  Features: 50
+  Train: 64,152 | Val: 13,415 | Back: 5,973 | Live: 5,843
+  Tasa tardíos — Train: 9.1% | Val: 6.8% | Back: 1.4% | Live: 4.1%
+
+=================================================================
+  FASE 1 — COMPARATIVA DE TÉCNICAS DE BALANCEO
+=================================================================
+
+  Técnicas evaluadas:
+  ┌─────────────────┬─────────────────────────────────────────────┐
+  │ Sin balanceo    │ Solo class_weight='balanced'                │
+  │ RandomOverSample│ Duplica aleatoriamente muestras minoritarias│
+  │ SMOTE           │ Genera ejemplos sintéticos interpolando     │
+  │ SMOTENC         │ SMOTE para datasets con features categóricas│
+  │ SMOTEENN        │ SMOTE + limpieza con Edited Nearest Neighbor│
+  └─────────────────┴─────────────────────────────────────────────┘
+  Nota: todas las técnicas se aplican SOLO sobre X_train.
+        Val, Backtest y Live no se modifican.
+
+
+  ── sin_balanceo ──
+     Clase 0: 58,288  |  Clase 1: 5,864  |  Total: 64,152
+     LogReg  → AUC Train: 0.7166 | AUC Val: 0.7528 | Gap: -0.0362
+     LightGBM → AUC Train: 0.9049 | AUC Val: 0.7328 | Gap: 0.1721
+
+  ── RandomOverSampler ──
+     Clase 0: 58,288  |  Clase 1: 58,288  |  Total: 116,576
+     LogReg  → AUC Train: 0.7166 | AUC Val: 0.7523 | Gap: -0.0357
+     LightGBM → AUC Train: 0.8986 | AUC Val: 0.7307 | Gap: 0.1679
+
+  ── SMOTE ──
+     Clase 0: 58,288  |  Clase 1: 58,288  |  Total: 116,576
+     LogReg  → AUC Train: 0.6384 | AUC Val: 0.6645 | Gap: -0.0261
+     LightGBM → AUC Train: 0.8554 | AUC Val: 0.7356 | Gap: 0.1198
+
+  ── SMOTENC ──
+     Clase 0: 58,288  |  Clase 1: 58,288  |  Total: 116,576
+     LogReg  → AUC Train: 0.6633 | AUC Val: 0.6863 | Gap: -0.0230
+     LightGBM → AUC Train: 0.8461 | AUC Val: 0.7297 | Gap: 0.1164
+
+  ── SMOTEENN ──
+     Clase 0: 35,016  |  Clase 1: 57,577  |  Total: 92,593
+     LogReg  → AUC Train: 0.6490 | AUC Val: 0.6734 | Gap: -0.0244
+     LightGBM → AUC Train: 0.8532 | AUC Val: 0.7312 | Gap: 0.1220
+
+─────────────────────────────────────────────────────────────────
+  RESUMEN COMPARATIVA DE BALANCEO
+─────────────────────────────────────────────────────────────────
+          tecnica   modelo  AUC_train  AUC_val     gap  n_clase1
+     sin_balanceo   LogReg     0.7166   0.7528 -0.0362      5864
+     sin_balanceo LightGBM     0.9049   0.7328  0.1721      5864
+RandomOverSampler   LogReg     0.7166   0.7523 -0.0357     58288
+RandomOverSampler LightGBM     0.8986   0.7307  0.1679     58288
+            SMOTE   LogReg     0.6384   0.6645 -0.0261     58288
+            SMOTE LightGBM     0.8554   0.7356  0.1198     58288
+          SMOTENC   LogReg     0.6633   0.6863 -0.0230     58288
+          SMOTENC LightGBM     0.8461   0.7297  0.1164     58288
+         SMOTEENN   LogReg     0.6490   0.6734 -0.0244     57577
+         SMOTEENN LightGBM     0.8532   0.7312  0.1220     57577
+
+  ✅ Mejor técnica para LogReg:    sin_balanceo
+  ✅ Mejor técnica para LightGBM:  SMOTE
+
+  Train LogReg  post-balanceo:  64,152 filas
+  Train LightGBM post-balanceo: 116,576 filas
+
+=================================================================
+  FASE 2 — TUNEO CON OPTUNA (200 trials por modelo)
+=================================================================
+
+▶ Tuneando Regresión Logística...
+  Espacio de búsqueda: C, solver, max_iter
+  Criterio: AUC-ROC sobre Val (CV 3 folds en train)
+Best trial: 175. Best value: 0.754904: 100%|███████████████████████████████████████████| 200/200 [19:41<00:00,  5.91s/it]
+
+  Mejores parámetros LogReg:
+    C: 0.0072860605343895435
+    solver: lbfgs
+  Mejor AUC Val: 0.7549
+  ✅ data/optuna_historial_logreg.csv
+
+▶ Tuneando LightGBM...
+  Espacio de búsqueda: num_leaves, lr, reg_alpha, reg_lambda,
+                       min_child_samples, feature_fraction,
+                       bagging_fraction, n_estimators
+  Early stopping: 50 rounds sobre Val
+Best trial: 189. Best value: 0.748476: 100%|███████████████████████████████████████████| 200/200 [37:09<00:00, 11.15s/it]
+
+  Mejores parámetros LightGBM:
+    n_estimators: 934
+    num_leaves: 96
+    learning_rate: 0.017814021907730525
+    min_child_samples: 21
+    reg_alpha: 0.2814023899359352
+    reg_lambda: 0.0001611453494475074
+    feature_fraction: 0.6572147520761816
+    bagging_fraction: 0.8252499751716187
+  Mejor AUC Val: 0.7485
+  ✅ data/optuna_historial_lightgbm.csv
+
+=================================================================
+  FASE 3 — COMPARATIVA BASE vs TUNEADO (Validación)
+=================================================================
+
+  ───────────────────────────────────────────────────────
+  LogReg BASE (Sprint 2)  [VAL]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7528   Gini    : 0.5057
+  PR-AUC  : 0.1883   KS      : 0.3848
+  F1      : 0.2208   Recall  : 0.738
+  Precision:0.1298   Accuracy: 0.6444
+  TP=676  FP=4531  TN=7968  FN=240
+  Tasa Detección: 73.8%
+
+  ───────────────────────────────────────────────────────
+  LogReg TUNEADO  [VAL]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7549   Gini    : 0.5098
+  PR-AUC  : 0.1904   KS      : 0.3923
+  F1      : 0.2252   Recall  : 0.7413
+  Precision:0.1327   Accuracy: 0.6517
+  TP=679  FP=4436  TN=8063  FN=237
+  Tasa Detección: 74.1%
+
+  ───────────────────────────────────────────────────────
+  LightGBM BASE (Sprint 2)  [VAL]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7311   Gini    : 0.4622
+  PR-AUC  : 0.1741   KS      : 0.3509
+  F1      : 0.2339   Recall  : 0.6146
+  Precision:0.1444   Accuracy: 0.725
+  TP=563  FP=3336  TN=9163  FN=353
+  Tasa Detección: 61.5%
+
+  ───────────────────────────────────────────────────────
+  LightGBM TUNEADO  [VAL]  umbral=0.5
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7421   Gini    : 0.4843
+  PR-AUC  : 0.1757   KS      : 0.3812
+  F1      : 0.0722   Recall  : 0.0426
+  Precision:0.2378   Accuracy: 0.9253
+  TP=39  FP=125  TN=12374  FN=877
+  Tasa Detección: 4.3%
+
+  RESUMEN COMPARATIVA:
+                  modelo  AUC-ROC   Gini  PR-AUC     KS     F1  Recall  Precision
+  LogReg BASE (Sprint 2)   0.7528 0.5057  0.1883 0.3848 0.2208  0.7380     0.1298
+          LogReg TUNEADO   0.7549 0.5098  0.1904 0.3923 0.2252  0.7413     0.1327
+LightGBM BASE (Sprint 2)   0.7311 0.4622  0.1741 0.3509 0.2339  0.6146     0.1444
+        LightGBM TUNEADO   0.7421 0.4843  0.1757 0.3812 0.0722  0.0426     0.2378
+
+  BRECHA SOBREAJUSTE (Train → Val) POST-TUNEO:
+  Modelo                            Train      Val      Gap  Estado
+  -----------------------------------------------------------------
+  LogReg BASE (Sprint 2)           0.7166   0.7528  -0.0362  ✅ OK
+  LogReg TUNEADO                   0.7154   0.7549  -0.0395  ✅ OK
+  LightGBM BASE (Sprint 2)         0.8663   0.7311   0.1352  ⚠️ Moderado
+  LightGBM TUNEADO                 0.9970   0.7421   0.2549  ❌ Sobreajuste
+
+=================================================================
+  BACKTESTING TEMPORAL — MODELO GANADOR TUNEADO
+=================================================================
+
+  ✅ Champion tuneado: LogReg TUNEADO
+  Umbral óptimo (F1 sobre Val): 0.66
+
+  ───────────────────────────────────────────────────────
+  LogReg TUNEADO  [VAL]  umbral=0.66
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7549   Gini    : 0.5098
+  PR-AUC  : 0.1904   KS      : 0.3923
+  F1      : 0.2706   Recall  : 0.393
+  Precision:0.2063   Accuracy: 0.8553
+  TP=360  FP=1385  TN=11114  FN=556
+  Tasa Detección: 39.3%
+
+  ───────────────────────────────────────────────────────
+  LogReg TUNEADO  [BACKTEST]  umbral=0.66
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.7416   Gini    : 0.4831
+  PR-AUC  : 0.0461   KS      : 0.3913
+  F1      : 0.0969   Recall  : 0.3373
+  Precision:0.0566   Accuracy: 0.9126
+  TP=28  FP=467  TN=5423  FN=55
+  Tasa Detección: 33.7%
+
+  ───────────────────────────────────────────────────────
+  LogReg TUNEADO  [LIVE]  umbral=0.66
+  ───────────────────────────────────────────────────────
+  AUC-ROC : 0.6472   Gini    : 0.2943
+  PR-AUC  : 0.1034   KS      : 0.2112
+  F1      : 0.1193   Recall  : 0.4208
+  Precision:0.0695   Accuracy: 0.7448
+  TP=101  FP=1352  TN=4251  FN=139
+  Tasa Detección: 42.1%
+
+  RESUMEN BACKTESTING:
+   split  AUC-ROC   Gini  Recall     F1  Tasa_Deteccion
+     VAL   0.7549 0.5098  0.3930 0.2706          0.3930
+BACKTEST   0.7416 0.4831  0.3373 0.0969          0.3373
+    LIVE   0.6472 0.2943  0.4208 0.1193          0.4208
+
+  COMPARATIVA VAL → BACKTEST → LIVE:
+  Modelo                              Val  Backtest    Live
+  ----------------------------------------------------------
+  LogReg BASE                      0.7528    0.7372  0.6618
+  LogReg TUNEADO                   0.7549    0.7416  0.6472
+
+▶ Generando gráficas...
+  ✅ reports/curva_roc_tuneado.png
+  ✅ reports/optuna_historial.png
+  ✅ reports/comparativa_balanceo.png
+
+▶ Guardando Champion Tuneado...
+  ✅ models/champion_model_v3.pkl
+  ✅ models/champion_resumen_v3.json
+
+=================================================================
+  SPRINT 3 — TUNEO COMPLETADO ✅
+  Champion: LogReg TUNEADO
+  AUC-ROC Val:      0.7549
+  AUC-ROC Backtest: 0.7416
+  AUC-ROC Live:     0.6472
+  Umbral óptimo:    0.66
+  Técnica balanceo LogReg:   sin_balanceo
+  Técnica balanceo LightGBM: SMOTE
+=================================================================
+PS C:\Users\SANDY\Desktop\olist> 

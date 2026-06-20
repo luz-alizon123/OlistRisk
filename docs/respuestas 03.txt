@@ -1,0 +1,83 @@
+============================================================
+  PREPARACIÓN DE DATOS — SPRINT 4
+============================================================
+  Cargado: 89,802 filas × 79 cols
+  ✅ Sin pedidos de agosto — corte limpio
+============================================================
+  SPLIT TEMPORAL
+============================================================
+
+  Justificación de cortes:
+  Train  (Sep16–Mar18): incluye picos Feb 16% y Mar 21%
+  Val    (Abr–May 18):  ~13.5k pedidos, tasa ~7% promedio
+  Back   (Jun 18):      mes tranquilo, mide estabilidad
+  Live   (Jul 18):      simulación producción, 4.1% tardíos
+
+  train     : 64,152 pedidos | 9.1% tardíos | 2016-09-15 → 2018-03-31
+  val       : 13,415 pedidos | 6.8% tardíos | 2018-04-01 → 2018-05-31
+  backtest  :  5,973 pedidos | 1.4% tardíos | 2018-06-01 → 2018-06-30
+  live      :  5,843 pedidos | 4.1% tardíos | 2018-07-01 → 2018-07-31
+
+  ✅ Sin solapamiento train ↔ val
+  ✅ Sin solapamiento train ↔ backtest
+  ✅ Sin solapamiento train ↔ live
+  ✅ Sin solapamiento val ↔ backtest
+  ✅ Sin solapamiento val ↔ live
+  ✅ Sin solapamiento backtest ↔ live
+
+============================================================
+  IMPUTACIÓN DE NULOS
+============================================================
+  Columnas imputadas: 27
+  Missing máx post-imputación (train): 0.00%
+
+============================================================
+  CLIPADO DE OUTLIERS (p1–p99)
+============================================================
+  Variables clipadas: 13
+    total_weight_g                      [100.00, 22600.00]
+    freight_ratio                       [0.03, 1.42]
+    volume_cm3                          [352.00, 115934.00]
+    density_gcm3                        [0.01, 1.52]
+    total_price                         [11.97, 976.22]
+    total_freight                       [7.78, 97.98]
+    estimated_delivery_days             [10.00, 51.00]
+    total_payment                       [23.10, 1032.39]
+    price_per_item                      [10.99, 899.00]
+    max_dimension_cm                    [16.00, 100.00]
+    seller_late_rate_hist               [0.00, 0.37]
+    freight_per_kg                      [1.62, 217.97]
+    approval_ratio                      [0.00, 87.48]
+
+============================================================
+  WOE ENCODING
+============================================================
+  customer_state                 27 categorías codificadas
+  seller_state                   22 categorías codificadas
+  main_category                  72 categorías codificadas
+  main_payment_type              4 categorías codificadas
+
+============================================================
+  ESCALADO (StandardScaler)
+============================================================
+  Variables escaladas: 23
+
+============================================================
+  GUARDANDO ARCHIVOS
+============================================================
+  ✅ split_train.parquet  (64,152 filas × 79 cols)
+  ✅ split_val.parquet  (13,415 filas × 79 cols)
+  ✅ split_backtest.parquet  (5,973 filas × 79 cols)
+  ✅ split_live.parquet  (5,843 filas × 79 cols)
+  ✅ transformaciones.pkl
+
+============================================================
+  RESUMEN FINAL
+============================================================
+  Features disponibles: 67
+  train     : 64,152 pedidos | 9.1% tardíos
+  val       : 13,415 pedidos | 6.8% tardíos
+  backtest  : 5,973 pedidos | 1.4% tardíos
+  live      : 5,843 pedidos | 4.1% tardíos
+
+  → Ejecutar ahora: python 04_seleccion_variables.py

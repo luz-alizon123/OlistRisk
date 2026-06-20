@@ -1,0 +1,118 @@
+PS C:\Users\SANDY\Desktop\olist> & C:/Users/SANDY/AppData/Local/Python/pythoncore-3.14-64/python.exe c:/Users/SANDY/Desktop/olist/02_feature_engineering.py
+=================================================================
+  FEATURE ENGINEERING — SPRINT 3
+  Corte: hasta 31-Jul-2018 | Solo pedidos entregados
+=================================================================
+
+🔄 Cargando datos desde PostgreSQL...
+   → 96,470 pedidos cargados | 34 columnas
+
+🔄 Aplicando filtros de calidad..
+   Registros antes de filtros: 96,470
+   ──────────────────────────────────────────────────
+   F2 — Sin fecha de entrega real:           0 (todos tienen)
+   F3 — Pedidos post 2018-07-31 (agosto+):  -6,664
+   F5 — Días estimados fuera de rango:      -4
+   ──────────────────────────────────────────────────
+   Registros después de filtros: 89,802
+   Período final: 2016-09-15 → 2018-07-30
+
+🔄 Construyendo variable objetivo (is_late_delivery)...
+   Pedidos a tiempo (0): 82,672  (92.1%)
+   Pedidos tardíos  (1): 7,130  (7.9%)
+   Tasa de retraso: 7.9%
+
+🔄 Features temporales...
+🔄 Features geográficas...
+🔄 Features del producto...
+🔄 Features de pago...
+🔄 Historial del vendedor (rolling window)...
+🔄 Score de riesgo compuesto...
+
+╔══════════════════════════════════════════════════════════════════════╗
+║              CATÁLOGO DE VARIABLES — SPRINT 3                        ║
+╠══════════════════════════════════════════════════════════════════════╣
+║ GRUPO 1 — VARIABLES TEMPORALES (15 features)                         ║
+║  purchase_weekday      Num/Ordinal  0=Lun … 6=Dom                    ║
+║  purchase_hour         Num/Ordinal  0–23h                            ║
+║  bin_hora              Num/Ordinal  0=madrug 1=mañana 2=tarde 3=noch ║
+║  semana_del_mes        Num/Ordinal  1–5 (semana dentro del mes)      ║
+║  is_weekend            Binaria      1 si sábado o domingo            ║
+║  is_off_hours          Binaria      1 si < 8h o >= 18h               ║
+║  high_risk_day         Binaria      1 si viernes tarde o fin semana  ║
+║  is_peak_season        Binaria      1 si nov–dic                     ║
+║  is_festivo            Binaria      1 si festivo nacional Brasil     ║
+║  estimated_delivery_days Numérica   días prometidos desde la compra  ║
+║  is_short_promise      Binaria      1 si prometidos < 10 días        ║
+║  approval_ratio        Numérica     horas_aprobación / mediana_global║
+║  approval_bin          Num/Ordinal  0=rápido 1=normal 2=lento        ║
+║  approval_delay_flag   Binaria      1 si ratio > 3× la mediana       ║
+║  weekday_x_hour        Numérica     interacción día×hora             ║
+╠══════════════════════════════════════════════════════════════════════╣
+║ GRUPO 2 — VARIABLES GEOGRÁFICAS (6 features)                         ║
+║  region_risk_score     Num/Ordinal  1=baja 2=media 3=alta (destino)  ║
+║  same_state            Binaria      1 si comprador y vendedor mismo  ║
+║  interstate_flag       Binaria      1 si envío interestatal          ║
+║  complex_route         Binaria      1 si hub SP/RJ/MG → Norte        ║
+║  distance_km           Numérica     km proxy por región destino      ║
+║  is_long_distance      Binaria      1 si distance_km > 1000          ║
+╠══════════════════════════════════════════════════════════════════════╣
+║ GRUPO 3 — VARIABLES DE PRODUCTO / LOGÍSTICA (10 features)            ║
+║  volume_cm3            Numérica     largo×alto×ancho promedio        ║
+║  density_gcm3          Numérica     peso_total / volumen             ║
+║  max_dimension_cm      Numérica     mayor dimensión del pedido       ║
+║  has_oversized_item    Binaria      1 si alguna dim > 60 cm          ║
+║  is_heavy              Binaria      1 si peso_promedio > 5 kg        ║
+║  logistic_complexity   Num/Ordinal  1=baja 2=media 3=alta (categoría)║
+║  carrito_complejo      Binaria      1 si total_items > 2             ║
+║  tiene_varios_vendedores Binaria    1 si unique_sellers > 1          ║
+║  log_total_weight      Numérica     log(1 + peso_total_g)            ║
+║  log_volume_cm3        Numérica     log(1 + volumen_cm3)             ║
+╠══════════════════════════════════════════════════════════════════════╣
+║ GRUPO 4 — VARIABLES DE PAGO (8 features)                             ║
+║  freight_ratio         Numérica     flete / precio_total             ║
+║  price_per_item        Numérica     precio_total / n_items           ║
+║  is_boleto             Binaria      1 si pago en boleto bancário     ║
+║  is_high_installments  Binaria      1 si cuotas > 6                  ║
+║  log_total_payment     Numérica     log(1 + total_pago)              ║
+║  high_freight_flag     Binaria      1 si freight_ratio > 0.5         ║
+║  freight_category      Num/Ordinal  1=bajo 2=medio 3=alto            ║
+║  freight_per_kg        Numérica     flete por kg enviado             ║
+╠══════════════════════════════════════════════════════════════════════╣
+║ GRUPO 5 — HISTORIAL DEL VENDEDOR (3 features)                        ║
+║  seller_late_rate_hist  Numérica    tasa retraso histórica (rolling) ║
+║  seller_total_orders_hist Numérica  órdenes previas del vendedor     ║
+║  seller_is_experienced  Binaria     1 si más de 50 órdenes previas   ║
+╠══════════════════════════════════════════════════════════════════════╣
+║ GRUPO 6 — SCORE E INTERACCIONES (3 features)                         ║
+║  risk_score            Numérica     score compuesto 0–10             ║
+║  region_x_complexity   Numérica     region_risk × logistic_complexity║
+║  distance_x_complexity Numérica     distance_km × logistic_complexity║
+╚══════════════════════════════════════════════════════════════════════╝
+
+=================================================================
+  VALIDACIÓN FINAL
+=================================================================
+  Filas:           89,802
+  Columnas:        79
+  Duplicados:      0
+  Tasa de retraso: 7.9%
+  Missing máx:     1.4%
+  Risk score:      2.9 – 10.0
+  Período:         2016-09-15 → 2018-07-30
+
+  Tasa mensual de tardíos (últimos meses):
+         pedidos  tasa
+mes                   
+2017-12     5513   8.4
+2018-01     7069   6.6
+2018-02     6554  16.0
+2018-03     7002  21.4
+2018-04     6798   5.3
+2018-05     6749   8.2
+2018-06     6096   1.4
+2018-07     5843   4.1
+
+✅ Guardado en: master_table_dirty.parquet
+   89,802 filas × 79 columnas
+   → Ejecutar ahora: python 03_preparar_datos.py
