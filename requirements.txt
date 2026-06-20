@@ -1,8 +1,9 @@
 # Core
 pandas
 numpy
-pyarrow==14.0.2
-scikit-learn
+pyarrow==17.0.0
+setuptools>=75.0.0
+scikit-learn>=1.5.0
 scipy
 joblib
 
@@ -17,10 +18,10 @@ optuna
 category-encoders
 
 # Explicabilidad (Se deja libre para evitar fallos de compilación C++)
-shap
+shap>=0.46.0
 
 # Visualización
-matplotlib
+matplotlib>=3.9.0
 seaborn
 plotly
 
