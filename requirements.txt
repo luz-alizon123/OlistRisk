@@ -31,6 +31,3 @@ streamlit
 # Base de datos (Se cambia psycopg2-binary por pg8000 o se deja libre para evitar errores de binarios)
 sqlalchemy
 psycopg2-binary
-
-# AWS
-boto3
