@@ -1,7 +1,7 @@
 # Core
 pandas
 numpy
-pyarrow==17.0.0
+pyarrow>=14.0.1
 setuptools>=75.0.0
 scikit-learn>=1.5.0
 scipy
@@ -17,7 +17,7 @@ optuna
 # Encoding
 category-encoders
 
-# Explicabilidad (Se deja libre para evitar fallos de compilación C++)
+# Explicabilidad
 shap>=0.46.0
 
 # Visualización
@@ -28,6 +28,9 @@ plotly
 # App
 streamlit
 
-# Base de datos (Se cambia psycopg2-binary por pg8000 o se deja libre para evitar errores de binarios)
+# Base de datos
 sqlalchemy
 psycopg2-binary
+
+# AWS
+boto3
